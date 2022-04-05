@@ -1,0 +1,7 @@
+{
+  "name": "better-bitset",
+  "version": "1",
+  "dependencies": [
+    "benchmark"
+  ]
+}

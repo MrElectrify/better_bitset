@@ -1,0 +1,38 @@
+2022-04-05T18:03:56-04:00
+Running src/io-format-benchmark
+Run on (20 X 3609.6 MHz CPU s)
+CPU Caches:
+  L1 Data 48 KiB (x10)
+  L1 Instruction 32 KiB (x10)
+  L2 Unified 1280 KiB (x10)
+  L3 Unified 25600 KiB (x1)
+Load Average: 0.00, 0.02, 0.00
+-----------------------------------------------------------
+Benchmark                 Time             CPU   Iterations
+-----------------------------------------------------------
+BM_Bitset<4>            250 ns          250 ns      2796929
+BM_Bitset<8>            701 ns          701 ns       979926
+BM_Bitset<16>          1241 ns         1241 ns       564154
+BM_Bitset<32>          3340 ns         3340 ns       222597
+BM_Bitset<64>          6349 ns         6349 ns       101240
+BM_Bitset<96>         12305 ns        12305 ns        54230
+BM_Bitset<128>        17619 ns        17619 ns        39661
+BM_Bitset<256>        35313 ns        35313 ns        19823
+BM_Bitset<512>        65758 ns        65758 ns         9893
+BM_Bitset<1024>      128450 ns       128446 ns         5332
+BM_Bitset<2048>      243447 ns       243447 ns         2728
+BM_Bitset<4096>      516509 ns       516510 ns         1000
+BM_Bitset<8192>      953294 ns       953296 ns          696
+BM_BBitset<4>           405 ns          405 ns      1730532
+BM_BBitset<8>           218 ns          218 ns      3160342
+BM_BBitset<16>          419 ns          419 ns      1784403
+BM_BBitset<32>          441 ns          441 ns      1681862
+BM_BBitset<64>          213 ns          213 ns      3205322
+BM_BBitset<96>          505 ns          505 ns      1000000
+BM_BBitset<128>         469 ns          469 ns      1486158
+BM_BBitset<256>         696 ns          696 ns      1021504
+BM_BBitset<512>        1111 ns         1111 ns       655306
+BM_BBitset<1024>       1789 ns         1789 ns       390295
+BM_BBitset<2048>       5104 ns         5104 ns       130376
+BM_BBitset<4096>      10253 ns        10254 ns        66780
+BM_BBitset<8192>      18134 ns        18134 ns        38507

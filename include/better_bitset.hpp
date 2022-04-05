@@ -130,8 +130,6 @@ namespace better_bitset
                 m_storage[NUM_CHUNKS - 1]), N % 64);
             return pos;
         }
-        /* CAPACITY */
-
         /// @brief Tests the bit at a an index. Does not perform a bounds
         /// check in release
         /// @param pos The bit position
@@ -140,6 +138,10 @@ namespace better_bitset
         {
             return (*this)[pos];
         }
+
+        /* CAPACITY */
+
+        constexpr size_t size() const noexcept { return N; }
 
         /* MODIFIERS */
 

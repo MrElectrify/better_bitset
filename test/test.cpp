@@ -3,12 +3,17 @@
 
 #include <iostream>
 
-template <size_t SIZE>
-void runTest() {
-    constexpr size_t numChunks = (SIZE + 63) / 64;
-    if constexpr (SIZE != 0) {
-        runTest<SIZE - 1>();
 
+template <size_t MAX_SIZE, size_t TEST_ID = 0, size_t DEPTH = 0>
+void runTest() {
+    
+    if constexpr ((1ull << DEPTH) < MAX_SIZE) {
+        runTest<MAX_SIZE, TEST_ID | (1ull << DEPTH), DEPTH + 1>();
+        runTest<MAX_SIZE, TEST_ID, DEPTH + 1>();
+    }
+    else {
+        constexpr size_t SIZE = TEST_ID + 1;
+        constexpr size_t numChunks = (SIZE + 63) / 64;
         better_bitset::BitSet<SIZE> bs;
         if (bs.first_one() != SIZE) {
             std::cerr << "bs.first_one()=" << bs.first_one()
@@ -76,7 +81,7 @@ void runTest() {
 
 int main() {
 
-    runTest<256>();
+    runTest<1024>();
 
     return 0;
 }

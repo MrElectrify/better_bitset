@@ -2,3 +2,4 @@
 .vscode/
 out/
 test/test
+CMakeSettings.json

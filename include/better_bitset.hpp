@@ -21,21 +21,6 @@
 
 namespace better_bitset
 {
-    namespace detail
-    {
-        template<typename T, size_t N>
-        constexpr T bit_mask() noexcept requires(N == 0)
-        {
-            return 0;
-        }
-
-        template<typename T, size_t N>
-        constexpr T bit_mask() noexcept requires(N > 0)
-        {
-            static_assert(N <= sizeof(T) * 8);
-            return (bit_mask<T, N - 1>() << 1) | 1;
-        }
-    }
 
     /// @brief A proper bitset that supports scanning
     template<size_t N> requires (N > 0)
@@ -47,7 +32,7 @@ namespace better_bitset
             std::conditional_t<(N > 16), uint32_t,
             std::conditional_t<(N > 8), uint16_t, uint8_t>>>;
         /// @brief The mask of the last bit
-        constexpr static size_t LAST_MASK = detail::bit_mask<Inner_t, ((N - 1) % 64) + 1>();
+        constexpr static size_t LAST_MASK = ~(~1ull << ((N - 1ull) % (64ull)));
         /// @brief The number of chunks stored
         constexpr static size_t NUM_CHUNKS = (N + 63) / 64;
         /// @brief The storage type. Bits are stored from LSB to MSB
@@ -102,32 +87,26 @@ namespace better_bitset
         constexpr size_t first_one() const noexcept
         {
             size_t pos = 0;
-            for (size_t i = 0; i < NUM_CHUNKS - 1; ++i)
+            for (size_t i = 0; i < NUM_CHUNKS; ++i)
             {
                 size_t chunk_pos = std::countr_zero(m_storage[i]);
                 pos += chunk_pos;
                 if (chunk_pos != sizeof(Inner_t) * 8)
                     return pos;
             }
-            // check the final chunk
-            pos += std::min<size_t>(std::countr_zero(
-                m_storage[NUM_CHUNKS - 1]), N % 64);
-            return pos;
+            return N;
         }
         /// @return The position of the first zero in the bitset
         constexpr size_t first_zero() const noexcept
         {
             size_t pos = 0;
-            for (size_t i = 0; i < NUM_CHUNKS - 1; ++i)
+            for (size_t i = 0; i < NUM_CHUNKS; ++i)
             {
                 size_t chunk_pos = std::countr_one(m_storage[i]);
                 pos += chunk_pos;
                 if (chunk_pos != sizeof(Inner_t) * 8)
                     return pos;
             }
-            // check the final chunk
-            pos += std::min<size_t>(std::countr_one(
-                m_storage[NUM_CHUNKS - 1]), N % 64);
             return pos;
         }
         /// @brief Tests the bit at a an index. Does not perform a bounds
@@ -163,10 +142,10 @@ namespace better_bitset
             {
                 const size_t chunk = pos / 64;
                 const size_t shift = pos % 64;
-                m_storage[chunk] |= 1 << shift;
+                m_storage[chunk] |= 1ull << shift;
                 return *this;
             }
-            m_storage[0] |= static_cast<Inner_t>(1 << pos);
+            m_storage[0] |= static_cast<Inner_t>(1ull << pos);
             return *this;
         }
         /// @brief Flips all bits
@@ -193,12 +172,12 @@ namespace better_bitset
                 const size_t chunk = pos / 64;
                 const size_t shift = pos % 64;
                 if (chunk == NUM_CHUNKS - 1)
-                    m_storage[chunk] &= ~(1 << shift) & LAST_MASK;
+                    m_storage[chunk] &= ~(1ull << shift) & LAST_MASK;
                 else
-                    m_storage[chunk] &= ~(1 << shift);
+                    m_storage[chunk] &= ~(1ull << shift);
                 return *this;
             }
-            m_storage[0] &= ~(1 << pos) & LAST_MASK;
+            m_storage[0] &= ~(1ull << pos) & LAST_MASK;
             return *this;
         }
 

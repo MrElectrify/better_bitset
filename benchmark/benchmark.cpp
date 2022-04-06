@@ -28,7 +28,7 @@ static void BM_Bitset(benchmark::State& state)
     bitsets.reserve(ITERATIONS);
     std::random_device rd;
     std::default_random_engine eng(rd());
-    std::bernoulli_distribution b(std::max(1.f, AVG_ONES / N));
+    std::bernoulli_distribution b(std::min(1.f, AVG_ONES / N));
     for (size_t i = 0; i < ITERATIONS; ++i)
     {
         std::bitset<N> bitset;
@@ -64,7 +64,7 @@ static void BM_BBitset(benchmark::State& state)
     bitsets.reserve(ITERATIONS);
     std::random_device rd;
     std::default_random_engine eng(rd());
-    std::bernoulli_distribution b(std::max(1.f, AVG_ONES / N));
+    std::bernoulli_distribution b(std::min(1.f, AVG_ONES / N));
     for (size_t i = 0; i < ITERATIONS; ++i)
     {
         better_bitset::BitSet<N> bitset;

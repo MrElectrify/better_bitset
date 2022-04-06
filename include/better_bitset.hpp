@@ -80,7 +80,7 @@ namespace better_bitset
         /// @return The number of 1 bits
         constexpr size_t count() const noexcept
         {
-            return std::accumulate(m_storage.begin(), m_storage.end(), 0,
+            return std::accumulate(m_storage.begin(), m_storage.end(), size_t(0),
                 [](size_t acc, Inner_t val) { return acc + std::popcount(val); });
         }
         /// @return The position of the first one in the bitset
@@ -153,7 +153,8 @@ namespace better_bitset
         {
             for (size_t i = 0; i < NUM_CHUNKS - 1; ++i)
                 m_storage[i] = ~m_storage[i];
-            m_storage[NUM_CHUNKS - 1] = ~m_storage[NUM_CHUNKS - 1] & LAST_MASK;
+            m_storage[NUM_CHUNKS - 1] = static_cast<Inner_t>(
+                ~static_cast<size_t>(m_storage[NUM_CHUNKS - 1]) & LAST_MASK);
             return *this;
         }
         /// @brief Sets all bits to false

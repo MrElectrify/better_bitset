@@ -6,6 +6,7 @@ project(better-bitset
 	LANGUAGES CXX)
 
 option(BB_BENCH "Build better_bitset benchmark" OFF)
+option(BB_TEST "Build better_bitset tests" OFF)
 
 add_library(better_bitset INTERFACE)
 
@@ -17,4 +18,7 @@ target_compile_features(better_bitset INTERFACE cxx_std_20)
 if (BB_BENCH)
 	find_package(benchmark REQUIRED)
 	add_subdirectory(benchmark)
+endif()
+if (BB_TEST)
+	add_subdirectory(test)
 endif()

@@ -41,17 +41,15 @@ namespace better_bitset
     public:
         constexpr BitSet() noexcept : m_storage() {}
         /// @param storage The storage
-        constexpr BitSet(Storage_t storage) noexcept requires(N > 64) :
+        constexpr BitSet(Storage_t storage) noexcept :
             m_storage(storage)
         {
-            BITSET_ASSERT(std::bit_width(storage[NUM_CHUNKS - 1]) <= LAST_MASK);
+            BITSET_ASSERT(std::bit_width(storage[NUM_CHUNKS - 1]) <= N);
+            m_storage[NUM_CHUNKS - 1] &= LAST_MASK;
         }
         /// @param storage The storage
         constexpr BitSet(Inner_t storage) noexcept requires(N <= 64) :
-            m_storage({ storage })
-        {
-            BITSET_ASSERT(std::bit_width(storage) <= N);
-        }
+            BitSet(Storage_t{ storage }) {}
 
         /* ACCESSORS */
 
@@ -269,6 +267,8 @@ namespace better_bitset
         static_assert(e.count() == 1);
         static_assert(e.first_one() == 128);
         static_assert(e.first_zero() == 0);
+        constexpr BitSet<4> f;
+        static_assert(f.first_one() == 4);
     }
 }
 

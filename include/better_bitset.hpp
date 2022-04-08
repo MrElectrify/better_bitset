@@ -225,51 +225,6 @@ namespace better_bitset
         /// @brief The internal value
         Storage_t m_storage;
     };
-
-    // constexpr tests
-    void test()
-    {
-        constexpr BitSet<8> a(0b00110101);
-        static_assert(a[0] == true);
-        static_assert(a[1] == false);
-        static_assert(a.test(1) == false);
-        static_assert(a.all() == false);
-        static_assert(a.any() == true);
-        static_assert(a.none() == false);
-        static_assert(a.count() == 4);
-        static_assert(a.first_one() == 0);
-        static_assert(a.first_zero() == 1);
-        constexpr BitSet<8> b(0b11111111);
-        static_assert(b.all() == true);
-        static_assert(b.any() == true);
-        static_assert(b.none() == false);
-        static_assert(b.count() == 8);
-        static_assert(a.first_one() == 0);
-        static_assert(b.first_zero() == 8);
-        constexpr BitSet<65> c({ 0xffffffffffffffff, 1 });
-        static_assert(c.all() == true);
-        static_assert(c.any() == true);
-        static_assert(c.none() == false);
-        static_assert(c.count() == 65);
-        static_assert(a.first_one() == 0);
-        static_assert(c.first_zero() == 65);
-        constexpr BitSet<70> d;
-        static_assert(d.all() == false);
-        static_assert(d.any() == false);
-        static_assert(d.none() == true);
-        static_assert(d.count() == 0);
-        static_assert(d.first_one() == 70);
-        static_assert(d.first_zero() == 0);
-        constexpr BitSet<129> e{ {0, 0, 1} };
-        static_assert(e.all() == false);
-        static_assert(e.any() == true);
-        static_assert(e.none() == false);
-        static_assert(e.count() == 1);
-        static_assert(e.first_one() == 128);
-        static_assert(e.first_zero() == 0);
-        constexpr BitSet<4> f;
-        static_assert(f.first_one() == 4);
-    }
 }
 
 #endif
